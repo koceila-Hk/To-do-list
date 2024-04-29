@@ -1,6 +1,6 @@
 import express, { urlencoded } from 'express'
 import cors from 'cors'
-import { add_user, addTask } from './model/supabase.js'
+import { add_user, addTask, getUsername } from './model/supabase.js'
 
 const app = express()
 const port = 3000
@@ -19,14 +19,27 @@ app.post('/user', async (req, res) => {
     }
 });
 
-app.post('/task', async (req,res) => {
+
+app.post('/todolist', async (req, res) => {
     try {
-        const { data, error } = await addTask(req.body);
-        res.json(data);
+        const username = req.query.username;
+        let { data: users, error: errorName } = await getUsername(username);
+
+        if (!users || users.length === 0) {
+            throw new Error('User not found');
+        }
+
+        const userID = users[0].id;
+
+        const { data, error } = await addTask(userID);
+    
+        res.status(200).json('ajout ok.');
     } catch (error) {
-        res.status(500).json({error : `Erreur lors de l'ajout tâche`})
+        console.error('Error ajout', error.message);
+        res.status(500).json({ error: error.message });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Hello I'm here ${port}`);

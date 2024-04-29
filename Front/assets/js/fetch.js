@@ -22,7 +22,7 @@ async function addTask(taskData) {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/task', requestOptions);
+        const response = await fetch('http://localhost:3000/todolist', requestOptions);
         const data = await response.json();
         return data;
     } catch (error) {
