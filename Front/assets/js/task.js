@@ -1,8 +1,14 @@
 import { addTask } from "./fetch.js";
 
+const url = new URLSearchParams(window.location.search);
+const username = url.get("username");
+
 const taskForm = document.getElementById('task-form');
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    var name = document.querySelector("#username").value
+    name = username;
+    console.log(name);
     // Récupérer les valeurs du formulaire
     const taskName = document.getElementById('task').value;
     const taskStatus = document.getElementById('status').value;
@@ -17,10 +23,10 @@ taskForm.addEventListener('submit', async (e) => {
 
     const taskData = {
         taskName,
-        taskStatus,
+        name,
     }
 
     const response = await addTask(taskData);
-    // Réinitialiser le formulaire
-    // document.getElementById('task-form').reset();
+    //Réinitialiser le formulaire
+    //document.getElementById('task-form').reset();
 });

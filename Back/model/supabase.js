@@ -22,12 +22,12 @@ async function add_user(info) {
 }
 
 ///////////////  Add task
-async function addTask(userID) {
+async function addTask(userID,task) {
     try {
         let { data, error } = await supabase
         .from('todolist')
         .insert([
-            {id_user: userID}
+            {id_user: userID,task:task}
         ])
 
         return { data, error };
@@ -40,13 +40,13 @@ async function addTask(userID) {
 
 async function getUsername(username) {
     try {
-        let { data, error } = await supabase
+        let {data,error} = await supabase
         .from('users')
         .select('id')
         .eq('username', username)
 
-        console.log('donnée: ', data);
-        return {date, error};
+        // console.log('donnée: ', data);
+        return ({data,error});
     } catch (error) {
         return { error: error.message};
     }

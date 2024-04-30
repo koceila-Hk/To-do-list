@@ -22,16 +22,14 @@ app.post('/user', async (req, res) => {
 
 app.post('/todolist', async (req, res) => {
     try {
-        const username = req.query.username;
-        let { data: users, error: errorName } = await getUsername(username);
+        const username = req.body.name;
+        const task = req.body.taskName;
+        let { data: users,error:errorName } = await getUsername(username);
+        
+        console.log(users);
+        const id=users[0].id;
 
-        if (!users || users.length === 0) {
-            throw new Error('User not found');
-        }
-
-        const userID = users[0].id;
-
-        const { data, error } = await addTask(userID);
+        const { data, error } = await addTask(id, task);
     
         res.status(200).json('ajout ok.');
     } catch (error) {
